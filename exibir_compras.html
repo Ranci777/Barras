@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Compras</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 80%;
+      margin: 20px auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Lista de Compras</h1>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Preço</th>
+      <th>Quantidade</th>
+      <th>Número da Compra</th>
+    </tr>
+    {% for compra in compras %}
+    <tr>
+      <td>{{ compra[0] }}</td>
+      <td>{{ compra[1] }}</td>
+      <td>{{ compra[2] }}</td>
+      <td>{{ compra[3] }}</td>
+      <td>{{ compra[4] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</body>
+
+</html>

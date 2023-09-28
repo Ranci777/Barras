@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<lang="pt-br">
+  <html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARRINHO</title>
+    <img src="carrinho.png" alt="logo" width="100" height="100">
+  </head>
+  <script>
+    // Função para obter parâmetros de consulta da URL
+    function getQueryParameters() {
+      var queryString = window.location.search.substring(1);
+      var queryParams = queryString.split("&");
+      var params = {};
+
+      for (var i = 0; i < queryParams.length; i++) {
+        var param = queryParams[i].split("=");
+        var paramName = decodeURIComponent(param[0]);
+        var paramValue = decodeURIComponent(param[1]);
+        params[paramName] = paramValue;
+      }
+
+      return params;
+    }
+
+    // Função para atualizar a tabela de carrinho com os dados do produto e preço
+    function updateCartTable() {
+      var params = getQueryParameters();
+      var tableBody = document.querySelector("table tbody");
+      var totalPrice = 0;
+
+      // Verifique se os parâmetros existem
+      if (params.hasOwnProperty("produto") && params.hasOwnProperty("preco")) {
+        var produto = params.produto;
+        var preco = parseFloat(params.preco).toFixed(2); // Converte para número decimal com 2 casas decimais
+
+        var row = document.createElement("tr");
+        var produtoCell = document.createElement("td");
+        var precoCell = document.createElement("td");
+
+        produtoCell.textContent = produto;
+        precoCell.textContent = "R$ " + preco;
+
+        row.appendChild(produtoCell);
+        row.appendChild(precoCell);
+        tableBody.appendChild(row);
+
+        totalPrice = parseFloat(preco);
+      }
+
+      // Atualize o total
+      var totalCell = document.querySelector("tfoot td");
+      totalCell.textContent = "R$ " + totalPrice.toFixed(2);
+    }
+
+    // Chame a função para atualizar a tabela quando a página carregar
+    window.onload = updateCartTable;
+  </script>
+
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      padding: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    footer {
+      background-color: #68df70;
+      font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      padding: 10px;
+      margin-top: 250px;
+    }
+  </style>
+
+
+  <body>
+    <h2>Carrinho</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Preço</th>
+        </tr>
+      </thead>
+      <tbody id="cartItems">
+        <!-- Os itens do carrinho serão adicionados aqui usando JavaScript -->
+      </tbody>
+    </table>
+    <h2>Total: R$ <span id="totalPrice">0.00</span></h2>
+    <button onclick="checkout()">Checkout</button>
+    <script>
+      // Função para exibir os itens do carrinho na página
+      function displayCart() {
+        var cart = JSON.parse(localStorage.getItem("cart")) || [];
+        var cartItems = document.getElementById("cartItems");
+        var totalPrice = 0;
+
+        // Limpe a lista de itens do carrinho antes de adicionar os itens
+        cartItems.innerHTML = "";
+
+        // Adicione cada item do carrinho à lista
+        cart.forEach(function (item) {
+          var row = document.createElement("tr");
+          var productNameCell = document.createElement("td");
+          var priceCell = document.createElement("td");
+
+          productNameCell.textContent = item.productName;
+          priceCell.textContent = "R$ " + item.price.toFixed(2);
+
+          row.appendChild(productNameCell);
+          row.appendChild(priceCell);
+
+          cartItems.appendChild(row);
+
+          totalPrice += item.price;
+        });
+
+        // Exiba o preço total
+        var totalPriceElement = document.getElementById("totalPrice");
+        totalPriceElement.textContent = totalPrice.toFixed(2);
+      }
+
+      // Função para finalizar a compra (você pode implementá-la)
+      function checkout() {
+        // Implemente a lógica de checkout aqui, como enviar os detalhes do pedido para um servidor, etc.
+        alert("Checkout realizado com sucesso!");
+        localStorage.removeItem("cart"); // Limpe o carrinho após o checkout
+        displayCart(); // Atualize a exibição do carrinho
+      }
+
+      // Exiba os itens do carrinho ao carregar a página
+      displayCart();
+    </script>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+      <!-- Configurar os parâmetros do PayPal -->
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="seu_email_paypal@example.com">
+      <input type="hidden" name="item_name" value="Compra na Loja Online">
+      <input type="hidden" name="amount" value="105.00">
+      <input type="hidden" name="currency_code" value="BRL">
+      <input type="hidden" name="return" value="URL_de_retorno_após_pagamento">
+      <input type="hidden" name="cancel_return" value="URL_de_cancelamento">
+
+      <!-- Botão de pagamento do PayPal -->
+      <input type="image" name="submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" alt="Pagar com o PayPal">
+    </form>
+  </body>
+
+  </div>
+  <h1> Dados do Cliente </h1>
+  <form id="payment-form">
+    <label for="nome">Nome do Cliente:</label>
+    <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" placeholder="Digite seu e-mail">
+    <button type="submit">ENVIAR</button>
+    <p>Para se cadastrar no PayPal, <a href="https://www.paypal.com" target="_blank">clique aqui</a>.</p>
+    </footer>
+    </body>
+    <script src="carrinho1.js"></script>
+    <footer>
+      Desenvolvido por: <a> Vitória Ranciaro </a>
+    </footer>
+
+  </html>

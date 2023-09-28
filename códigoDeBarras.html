@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<lang="pt-br">
+  <html>
+
+  <head>
+    <title>Laboratório 3D Produtos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    <style>
+      .large-title {
+        font-size: 48px;
+        font-weight: italic;
+        text-align: center;
+        color: #e6e6ea;
+      }
+
+      .product-card {
+        border: 5px solid #3636c9;
+        border-radius: 2px;
+        padding: 5px;
+        text-align: center;
+        box-sizing: border-box;
+        font-size: small;
+      }
+
+      .topnav {
+        background-color: black;
+        overflow: hidden;
+        border-radius: 15px;
+        padding: 8px;
+        margin-top: 20px;
+      }
+
+      .nav-button {
+        font-size: large;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+        color: rgb(100, 79, 215);
+        float: left;
+        text-align: center;
+        padding: 14px 16px;
+      }
+
+      .search-container {
+        text-align: right;
+        margin-top: 10px;
+        margin-right: 50px;
+      }
+
+      .logo {
+        float: right;
+        position: absolute;
+        top: 35px;
+        right: 20px;
+      }
+
+      .cart {
+        float: right;
+        position: absolute;
+        top: 95px;
+        right: 120px;
+        color: aquamarine;
+      }
+
+      .product-container {
+        display: flex;
+        flex-wrap: initial;
+        justify-content: center;
+        /* Center the cards horizontally */
+      }
+
+      .codigo-container {
+        text-align: center;
+        margin-top: 5px;
+        justify-content: center;
+      }
+
+      .containerV {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .ring {
+        width: 70px;
+        height: 70px;
+        border: 0px solid #0b0b0b;
+        border-radius: 50%;
+        position: absolute;
+      }
+
+      .ring:nth-child(1) {
+        border-bottom-width: 8px;
+        border-color: rgb(64, 36, 179);
+        animation: rotate 1s linear infinite;
+      }
+
+      footer {
+        background-color: rgb(31, 152, 13);
+        overflow: hidden;
+        border-radius: 10px;
+        padding: 10px;
+        margin-top: 20px;
+      }
+    </style>
+
+    <div class="topnav">
+
+      <h1 class="large-title"> LABORATÓRIO 3D
+        <img src="logo_lab.png" class="center" alt="logo_lab" style="width: 80px;">
+      </h1>
+      <a class="nav-button" href="Home.html">Home</a>
+      <a class="nav-button" href="Sobre.html">Sobre</a>
+      <a class="nav-button" href="Contato.html">Contato</a>
+      <a class="nav-button" href="códigoDeBarras.html">Produtos</a>
+      <a class="nav-button" href="Carrinho.html">Carrinho</a>
+      <a class="nav-button" href="Login.html">Login</a>
+      <a class="nav-button" href="Cadastro.html">Cadastro</a>
+      <a class="nav-button" href="Sair.html">Sair</a>
+      <div class="cart">
+        <img src="carrinho.png" width="30px">
+        <a href="Carrinho.html"><button>CARRINHO</button></a>
+      </div>
+      <div class="search-container">
+        <form action="/action_page.php">
+          <input type="text" placeholder="Pesquisar.." name="search">
+          <button type="submit">Pesquisar</button>
+          <br></br>
+        </form>
+      </div>
+      <div class="logo">
+        <img src="logo_gloria.png" alt="logo_gloria" style="width: 50px;">
+      </div>
+    </div>
+    <header>
+    </header>
+    </div>
+    <main>
+      <div class="product-container">
+        <div class="product-card" id="produto">
+          <img src="produto1.png" alt="Produto 1" style="height:100px;">
+          <h2>Produto 1</h2>
+          <p>Descrição do Produto 1
+            Acabamento Lateral do Banco -
+            Peça fabricada em 5h 55min.
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 01 -
+            Preço: R$ 40,00 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 40,00</span>
+          <button onclick="addToCart('Produto 1', 40.00)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card" id="produto">
+          <img src="produto2.png" alt="Produto 2" style="height:100px;" style="display: inline;">
+          <h2>Produto 2</h2>
+          <p>Descrição do Produto 2
+            Acabamento da manopla de câmbio -
+            Peça fabricada em 9h 51min
+            - Material: PLA - Cor: Preto
+            - Peso: 5g - código do produto: 02 -
+            Preço: R$ 7,96 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;" value="1;">
+          <span class="price">R$ 7,96</span>
+          <button onclick="addToCart('Produto 2', 7.96)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card" id="produto">
+          <img src="produto3.png" alt="Produto 3" style="height:100px;">
+          <h2>Produto 3</h2>
+          <p>Descrição do Produto 3
+            Suporte da máquina de cartão -
+            Peça fabricada em 9h 29min
+            - Material: PLA - Cor: Preto
+            - Peso: 50g - código do produto: 03 -
+            Preço: R$ 7,78 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 7,78</span>
+          <button onclick="addToCart('Produto 3', 7.78)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card" id="produto">
+          <img src="produto4.png" alt="Produto 4" style="height:100px;" style="text-align: center;">
+          <h2>Produto 4</h2>
+          <p> Descrição do produto 4
+            Suporte de Exaustor interno -
+            Peça fabricada em 8h 25min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 04 -
+            Preço: R$ 11,06 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 11,60</span>
+          <button onclick="addToCart('Produto 4', 11.06)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto5.png" alt="Produto 5" style="height:100px;" style="text-align: center;">
+          <h2>Produto 5</h2>
+          <p>Descrição do Produto 5
+            Luz interna tampa lateral -
+            Peça fabricada em 27min
+            - Material: PLA - Cor: Preto
+            - Peso: 2g - código do produto: 05 -
+            Preço: R$ 1,49 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 1,49</span>
+          <button onclick="addToCart('Produto 5', 1.49)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card" id="produto6">
+          <img src="produto6.png" alt="Produto 6" style="height:100px;" style="text-align: center;">
+          <h2>Produto 6</h2>
+          <p>Descrição do Produto 6
+            Calota -
+            Peça fabricada em 1h 34min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 06 -
+            Preço: R$ 2,97 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 2,97</span>
+          <button onclick="addToCart('Produto 6', 2.97)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto7.png" alt="Produto 7" style="height:100px;" style="text-align: center;">
+          <h2>Produto 7</h2>
+          <p>Descrição do Produto 7
+            Grade de Itinerário -
+            Peça fabricada em 4h 56min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 07 -
+            Preço: R$ 6,96 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 6,96</span>
+          <button onclick="addToCart('Produto 7', 6.96)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto8.png" alt="Produto 8" style="height:100px;" style="text-align: center;">
+          <h2>Produto 8</h2>
+          <p>Descrição do Produto 8
+            Caixa de Controlador de Tensão
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 08 -
+            Preço: R$ 1,32 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 1,32</span>
+          <button onclick="addToCart(' Produto 8 ', 1.32)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto9.png" alt="Produto 9" style="height:100px;" style="text-align: center;">
+          <h2>Produto 9</h2>
+          <p>Descrição do Produto 9
+            Batente de Janela -
+            Peça fabricada em 24min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 09 -
+            Preço: R$ 0,60 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 0,60</span>
+          <button onclick="addToCart('Produto 9', 0.60)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto10.png" alt="Produto 10" style="height:100px;" style="text-align: center;">
+          <h2>Produto 10</h2>
+          <p>Descrição do Produto 10
+            Acabamento do cinto de cadeirante -
+            Peça fabricada em 1h 01min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 10 -
+            Preço: R$ 1,06 unidade
+          </p>
+          <input type="number" id="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 1,06</span>
+          <button onclick="addToCart('Produto 10', 1.06)">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+      <div class="product-container">
+        <div class="product-card">
+          <img src="produto11.png" alt="Produto 11" style="height:100px;" style="text-align: center;">
+          <h2>Produto 11</h2>
+          <p>Descrição do Produto 11
+            Trava do sistema sonoro -
+            Peça fabricada em 1h 58min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 11 -
+            Preço: R$ 3,58 unidade
+          </p>
+          <input type="number" id="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 3,58</span>
+          <button onclick="addToCart('Produto 11', 3.58)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto12.png" alt="Produto 12" style="height:100px;" style="text-align: center;">
+          <h2>Produto 12</h2>
+          <p> Descrição Produto 12
+            Medalha Amigos Glória - Peça fabricada em 28min
+            - Material: PLA - Cor: Preto
+            - Peso: 10g - código do produto: 12 - Preço: R$ unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 0,80</span>
+          <button onclick="addToCart('Produto 12', 0.80 )">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto13.png" alt="Produto 13" style="height:100px;" style="text-align: center;">
+          <h2>Produto 13</h2>
+          <p> Descrição Produto 13
+            Suporte Lacre de Válvula -
+            Peça fabricada em 1h 11min
+            Material: PLA - Cor: Azul
+            Peso: 10g - código do produto: 13 -
+            Preço: R$ 1,10 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 1,10</span>
+          <button onclick="addToCart('Produto 13', 1.10)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto14.png" alt="Produto 14" style="height:100px;" style="text-align: center;">
+          <h2>Produto 14</h2>
+          <p> Descrição Produto 14
+            Bottom 66 anos Glória -
+            Peça fabricada em 16 min
+            Material: PLA - Cor: Preto
+            Peso: 2g - código do produto: 14 - Preço: R$ 0,70 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 0,70</span>
+          <button onclick="addToCart('Produto 14', 0.70)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto15.png" alt="Produto 15" style="height:100px;" style="text-align: center;">
+          <h2>Produto 15</h2>
+          <p> Descrição Produto 15
+            Bucha do Limpador do Parabrisa -
+            Peça fabricada em 30min
+            Material: PLA - Cor: Preto
+            Peso: 10g - código do produto: 15 -
+            Preço: R$ 0,30 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5">
+          <span class="price">R$ 0,30</span>
+          <button onclick="addToCart('Produto 15', 0.30)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto16.png" alt="Produto 16" style="height:100px;" style="text-align: center;">
+          <h2>Produto 16</h2>
+          <p> Descrição Produto 16
+            Suporte de Paquímetro -
+            Peça fabricada em 2h 14min
+            Material: PLA - Cor: Preto
+            Peso: 10g - código do produto: 16 -
+            Preço: R$ 4,60 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5">
+          <span class="price">R$ 4,60</span>
+          <button onclick="addToCart(' Produto 16 ', 4.60)">Adicionar ao Carrinho</button>
+        </div>
+        <div class="product-card">
+          <img src="produto17.png" alt="Produto 17" style="height:100px;" style="text-align: center;">
+          <img src="produto2.17.png" alt="Produto 17" style="height:100px;" style="text-align: center;">
+          <h2>Produto 17</h2>
+          <p> Descrição Produto 17
+            Suporte de Livros -
+            Peça fabricada em 6h 50min
+            Material: PLA - Cor: Preto
+            Peso: 10g - código do produto: 17 -
+            Preço: R$ 18,49 unidade
+          </p>
+          <input type="number" id="quantity" name="quantity" min="1" max="5" style="display: list-item;">
+          <span class="price">R$ 18,49</span>
+          <button onclick="addToCart(' Produto 17 ', 18.49)">Adicionar ao Carrinho</button>
+        </div>
+      </div>
+      <!-- Adicione mais produtos aqui -->
+    </main>
+    </div>
+    <div class="codigo-container">
+      <label for="codigo">Código de Barras:</label>
+      </form>
+      <label for="numeroProduto">Digite o número do produto:</label>
+      <input type="text" id="numeroProduto" placeholder="Número do Produto" maxlength="15">
+      <button onclick="gerarCodigo()">Gerar Código</button>
+      <p>Código do Produto: <span id="codigoProduto"></span></p>
+    </div>
+    <div class="codigo-container">
+      <script>
+        function gerarCodigo() {
+
+          if (numeroProduto >= 1 && numeroProduto <= 9) {
+            // Formato de 01 a 09 usando padStart
+            var codigoProduto = numeroProduto.toString().padStart(2, "0") + "L" + "101" + "2023";
+            document.getElementById("codigoProduto").textContent = codigoProduto + " - seu produto foi adicionado ao carrinho.";
+          }
+          else {
+            document.getElementById("codigoProduto").innerHTML = numeroProduto + " não está entre 1 e 17.";
+            alert("O número do produto deve estar entre 1 e 17." + "ERROR 4");
+          }
+          if (numeroProduto >= 10 && numeroProduto <= 17) {
+            var codigoProduto = numeroProduto + "L" + "101" + "2023";
+            document.getElementById("codigoProduto").innerHTML = codigoProduto + " - seu produto foi adicionado ao carrinho.";
+          }
+          else {
+            document.getElementById("codigoProduto").innerHTML = numeroProduto + " não está entre 1 e 17.";
+            alert("O número do produto deve estar entre 1 e 17." + "ERROR 4");
+          }
+        }
+      </script>
+    </div>
+    <img id="imagemProduto" src="" alt="Produto" style="display: none;">
+    <script>
+      function gerarCodigo() {
+        var numeroProduto = parseInt(document.getElementById("numeroProduto").value);
+        if (numeroProduto >= 1 && numeroProduto <= 20)
+          var codigoProduto = "";
+        // Defina os códigos dos produtos e os caminhos das imagens correspondentes
+        var produtos = {
+          1: { codigo: "01L1012023", imagem: "01.png" },
+          2: { codigo: "02L1012023", imagem: "02.png" },
+          3: { codigo: "03L1012023", imagem: "03.png" },
+          4: { codigo: "04L1012023", imagem: "04.png" },
+          5: { codigo: "05L1012023", imagem: "05.png" },
+          6: { codigo: "06L1012023", imagem: "06.png" },
+          7: { codigo: "07L1012023", imagem: "07.png" },
+          8: { codigo: "08L1012023", imagem: "08.png" },
+          9: { codigo: "09L1012023", imagem: "09.png" },
+          10: { codigo: "10L1012023", imagem: "10.png" },
+          11: { codigo: "11L1012023", imagem: "11.png" },
+          12: { codigo: "12L1012023", imagem: "12.png" },
+          13: { codigo: "13L1012023", imagem: "13.png" },
+          14: { codigo: "14L1012023", imagem: "14.png" },
+          15: { codigo: "15L1012023", imagem: "15.png" },
+          16: { codigo: "16L1012023", imagem: "16.png" },
+          17: { codigo: "17L1012023", imagem: "17.png" },
+        };
+        var produto = produtos[numeroProduto];
+        if (produto) {
+          codigoProduto = produto.codigo;
+        } else {
+          document.getElementById("codigoProduto").innerHTML = "Produto não encontrado.";
+          return;
+        }
+        document.getElementById("codigoProduto").textContent = codigoProduto + " - seu produto foi adicionado ao carrinho.";
+        var imagemElemento = document.getElementById("imagemProduto");
+        var caminhoImagem = produto.imagem;
+        if (numeroProduto >= 1 && numeroProduto <= 20) {
+          imagemElemento.src = caminhoImagem;
+          imagemElemento.style.display = "block"; // Exibe a imagem
+        } else {
+          imagemElemento.style.display = "none"; // Oculta a imagem
+        }
+      }
+      function onCarrinho() {
+        window.location.href = "Carrinho.html";
+      }
+    </script>
+    <br></br>
+    <div class="containerV">
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <div class="ring"></div>
+      <p>Loading...</p>
+    </div>
+    <h2>Carrinho</h2>
+    <p>Total: R$ <span id="total">0.00</span></p>
+    <ul id="cart"></ul>
+    <br></br>
+    <br></br>
+    <footer>
+      <h0>CONTATE-NOS</h0>
+      <p>Endereço: Rua Avenida Paraná, 2265 - Boa Vista, Curitiba - PR, 82510-000</p>
+      <p>Contato: (41) 99954-6645</p>
+      <p>&copy; 2023 Laboratório3DProdutos. Todos os direitos reservados.</p>
+      <p>Vitória Ranciaro</p>
+    </footer>
+    <script src="script.js"></script>
+    <script src="excelReader.js"></script>
+  </body>
+
+
+  </html>

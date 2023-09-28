@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<lang="pt-br">
+  <html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARRINHO</title>
+    <link rel="stylesheet" href="css/estilo.css">
+  </head>
+  <style>
+    body {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(#00121b, #000102);
+      overflow: hidden;
+      font-family: "Cairo", sans-serif;
+    }
+
+    .d-flex {
+      display: flex;
+    }
+
+    .row {
+      flex-direction: row;
+    }
+
+    .flex-fill {
+      flex: 1 1 auto;
+      width: 100%;
+    }
+
+    .justify-content-center {
+      justify-content: center;
+    }
+
+    .justify-content-start {
+      justify-content: flex-start;
+    }
+
+    .justify-content-end {
+      justify-content: flex-end;
+    }
+
+    .align-items-center {
+      align-items: center;
+    }
+
+    .align-items-start {
+      align-items: flex-start;
+    }
+
+    .align-items-end {
+      align-items: flex-end;
+    }
+
+    .table-container {
+      position: relative;
+      display: flex;
+      width: 85vw;
+      height: calc(((var(--data-limit) + 1) * 2rem) + 10rem);
+      transform-style: preserve-3d;
+      box-shadow: inset 0 -0.5rem 1rem rgba(0, 18, 27, 0.5), inset 0 0 1rem rgba(127, 255, 212, 0.3);
+      border: 2px solid rgba(127, 255, 212, 0.5);
+      border-radius: 1rem;
+      flex-direction: column;
+    }
+
+    .table-container::before {
+      position: absolute;
+      display: flex;
+      content: "";
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: conic-gradient(from var(--angle), #80ff80, rgba(127, 255, 212, 0.5), #80ff80, royalblue, #80ff80);
+      filter: blur(0.5rem);
+      transform: translatez(-2px);
+      z-index: -2;
+      opacity: 0.99;
+      animation: conic-rotate 12s infinite linear;
+    }
+
+    .table-container::after {
+      position: absolute;
+      display: flex;
+      content: "";
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-color: rgba(0, 18, 27, 0.95);
+      transform: translatez(-1px);
+      z-index: -1;
+      border-radius: inherit;
+    }
+
+    .table {
+      position: relative;
+      display: flex;
+      width: 100%;
+      padding: 1rem 0 0 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-image: linear-gradient(90deg, transparent, rgba(128, 255, 128, 0.15), transparent);
+      -webkit-background-image: linear-gradient(90deg, transparent, rgba(128, 255, 128, 0.15), transparent);
+      overflow: hidden;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    }
+
+    .table .table-row {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      gap: inherit;
+      width: calc(100% - 4rem);
+      padding: 0 2rem;
+      transition: opacity 0.5s;
+    }
+
+    .table .table-row:nth-child(2n) {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .table .table-col {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: inherit;
+      flex: 1 1 0;
+      height: 2rem;
+      justify-content: center;
+      align-items: flex-start;
+      color: #7fffd4;
+      text-shadow: 0 0 0.5rem rgba(127, 255, 212, 0.6);
+      font-size: calc(0.390625vw + 12px);
+      padding: 0 1rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .table .table-col span {
+      position: relative;
+      display: flex;
+      cursor: pointer;
+    }
+
+    .table .table-col span::before,
+    .table .table-col span::after {
+      position: absolute;
+      display: flex;
+      content: "";
+      height: 70%;
+      width: 0.3rem;
+      border-top: 2px solid #7fffd4;
+      border-bottom: 2px solid #7fffd4;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .table .table-col span::before {
+      border-left: 2px solid #7fffd4;
+      left: 0;
+      top: 50%;
+      transform: translate(-0.5rem, -50%) scale(0.6) rotate(20deg);
+    }
+
+    .table .table-col span::after {
+      border-right: 2px solid #7fffd4;
+      right: 0;
+      top: 50%;
+      transform: translate(0.5rem, -50%) scale(0.6) rotate(20deg);
+    }
+
+    .table .table-col span:hover::before {
+      opacity: 1;
+      transform: translate(-1rem, -50%) scale(0.8) rotate(0deg);
+    }
+
+    .table .table-col span:hover::after {
+      opacity: 1;
+      transform: translate(1rem, -50%) scale(0.8) rotate(0deg);
+    }
+
+    .table .table-heading .table-col {
+      color: #80ff80 !important;
+      text-shadow: 0 0 0.5rem rgba(128, 255, 128, 0.6);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .pagination-container {
+      position: relative;
+      display: flex;
+      flex: 1 1 auto;
+      width: 100%;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 1.5rem;
+      padding-top: 1rem;
+      flex-direction: column;
+    }
+
+    .pagination-wrapper {
+      position: relative;
+      display: flex;
+      height: fit-content;
+      overflow: hidden;
+      justify-content: flex-start;
+      width: 20rem;
+    }
+
+    .pagination {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      justify-content: flex-start;
+      transition: transform 0.5s;
+    }
+
+    .pagination>li {
+      position: relative;
+      display: flex;
+      width: 4rem;
+      max-width: 4rem;
+      flex: 0 0 auto;
+      height: 3rem;
+      justify-content: center;
+      align-items: center;
+      color: #80ff80;
+      font-size: calc(0.390625vw + 18px);
+      z-index: 5;
+      cursor: pointer;
+      user-select: none;
+      text-shadow: 0 0 0.4rem rgba(128, 255, 128, 0.6);
+    }
+
+    .pagination>li span {
+      pointer-events: none;
+    }
+
+    .pagination>li.active span {
+      position: relative;
+      display: flex;
+      height: 2.5rem;
+      padding: 0 1rem;
+      font-weight: bolder;
+      align-items: center;
+      justify-content: center;
+      background-image: linear-gradient(45deg, rgba(128, 255, 128, 0.1), rgba(0, 18, 27, 0.4));
+      border: 1px solid rgba(128, 255, 128, 0.3);
+      color: #b2ffe5;
+      border-radius: 5px;
+      text-shadow: 0 0 0.4rem rgba(178, 255, 229, 0.6);
+    }
+
+    .pagination-info {
+      position: absolute;
+      display: flex;
+      font-size: calc(0.390625vw + 10px);
+      color: #acd3ac;
+      bottom: 4.5rem;
+      text-shadow: 0 0 0.5rem rgba(172, 211, 172, 0.5);
+    }
+
+    .pagination-extreme {
+      position: relative;
+      display: flex;
+      height: 3rem;
+      width: 10rem;
+      border: none;
+      background-color: transparent;
+      border-radius: 5px;
+      justify-content: center;
+      align-items: center;
+      color: #80ff80;
+      font-size: calc(0.390625vw + 15px);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .pagination-extreme:hover {
+      transform: scale(1.4);
+    }
+
+    .progress-bar {
+      position: relative;
+      display: flex;
+      width: calc(100% - 6rem);
+      height: 2px;
+      background-color: rgba(127, 255, 212, 0.1);
+      border-radius: 2px;
+      margin: 0 3rem 2rem 3rem;
+    }
+
+    .progress-bar .progress-point {
+      position: absolute;
+      display: flex;
+      height: 0.5rem;
+      width: 0.5rem;
+      background-color: #004c32;
+      border-radius: 50%;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      transition: left 0.5s;
+    }
+
+    .infos {
+      position: absolute;
+      display: flex;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: "Cairo", sans-serif;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      height: 6rem;
+      font-size: calc(0.390625vw + 12px);
+      line-height: 24px;
+      font-weight: 600;
+      background-color: #80ff80;
+      background-image: linear-gradient(45deg, royalblue, #80ff80, #7fffd4);
+      -webkit-background-image: linear-gradient(45deg, #80ff80, royalblue, #7fffd4);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 0.4rem rgba(127, 255, 212, 0.4);
+    }
+  </style>
+
+  <body>
+    <div class="table-container" style="--data-limit: 9">
+      <div class="table" id="table-0" data-limit="9">
+        <div class="table-row table-heading">
+          <div class="table-col">
+            #
+          </div>
+          <div class="table-col">
+            First name
+          </div>
+          <div class="table-col">
+            Projetos
+          </div>
+          <div class="table-col">
+            Produtos
+          </div>
+          <div class="table-col">
+            Completed
+          </div>
+        </div>
+        <div class="table-row" data-copy="103">
+          <div class="table-col">
+            <span class="auto-increment">0</span>
+          </div>
+          <div class="table-col">
+            <span class="auto-firstname"></span>
+          </div>
+          <div class="table-col">
+            <span class="auto-lastname"></span>
+          </div>
+          <div class="table-col">
+            <span class="auto-title"></span>
+          </div>
+          <div class="table-col">
+            <span class="auto-integer" min="0" max="250"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination-container">
+        <div class="d-flex row flex-fill align-items-end justify-content-center">
+          <span class="pagination-info"></span>
+          <button class="pagination-extreme pagination-left">
+            <i class="fa-solid fa-angles-left"></i>
+          </button>
+          <button class="pagination-extreme pagination-left-one">
+            <i class="fa-solid fa-angle-left"></i>
+          </button>
+          <div class="d-flex flex-fill justify-content-center">
+            <div class="pagination-wrapper">
+              <ul class="pagination" data-table="table-0"></ul>
+            </div>
+          </div>
+          <button class="pagination-extreme pagination-right-one">
+            <i class="fa-solid fa-angle-right"></i>
+          </button>
+          <button class="pagination-extreme pagination-right">
+            <i class="fa-solid fa-angles-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-point"></div>
+      </div>
+    </div>
+    <h1> Seu Carrinho </h1>
+    <form id="payment-form">
+      <label for="nome">Nome do Cliente:</label>
+      <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
+      <label for="numero">Número da Compra:</label>
+      <input type="text" id="nome card" required><br></br>
+      <label for="valor">Valor da Compra:</label>
+      <input type="text" id="valor" name="valor" placeholder="Digite o valor da compra">
+      <label for="forma">Forma de Pagamento:</label>
+      <input type="text" id="forma" name="forma" placeholder="Digite a forma de pagamento">
+      <label for="quantidade">Quantidade de Itens:</label>
+      <input type="text" id="quantidade" name="quantidade" placeholder="Digite a quantidade de itens">
+      <label for="data-validade">Data de Validade:</label>
+      <input type="text" id="data-validade" name="data-validade" placeholder="MM/AAAA">
+      <button type="submit">PAGAR</button>
+  </body>
+  <script>
+    const FIRSTNAMES = [
+      'John', 'Steve', 'Marc', 'Franklin', 'Isaac', 'Vincent', 'Edwin',
+    ];
+
+    const LASTNAMES = [
+      'Shafer', 'Whitetaker', 'Glenn', 'Stephens', 'Sherman', 'Howard',
+      'Kent', 'Clay', 'Beck', 'Simmons', 'Briggs', 'Lee', 'Maxwell'
+    ];
+
+    const TITLES = [
+      'CEO', 'President', 'Vice President', 'Director', 'Manager',
+      'Developer'
+    ];
+
+    const BTN_WIDTH = 4;
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCopies();
+      initAutoLimits();
+      initAutoIncrements();
+      initAutoFirstnames();
+      initAutoLastnames();
+      initAutoTitles();
+      initAutoIntegers();
+      initPaginations();
+    });
+
+    function initCopies() {
+      let targets = [...document.querySelectorAll('*[data-copy]')];
+
+      targets.reverse().forEach((original) => {
+        let amount = parseInt(original.getAttribute('data-copy'));
+
+        for (let i = 0; i < amount; i++) {
+          let copy = original.cloneNode(true);
+
+          original.parentNode.insertBefore(copy, original.nextSibling);
+        }
+      });
+    }
+
+    function initAutoIncrements() {
+      let autos = document.querySelectorAll('.auto-increment');
+
+      autos.forEach((auto, i) => {
+        auto.innerHTML = i + 1;
+      });
+    }
+
+    const rand = (a, b) => Math.floor((Math.random() * b) + a);
+
+    function initAutoFirstnames() {
+      let autos = document.querySelectorAll('.auto-firstname');
+
+      autos.forEach((auto) => {
+        auto.innerHTML = FIRSTNAMES[rand(0, FIRSTNAMES.length)];
+      });
+    }
+
+    function initAutoLastnames() {
+      let autos = document.querySelectorAll('.auto-lastname');
+
+      autos.forEach((auto) => {
+        auto.innerHTML = LASTNAMES[rand(0, LASTNAMES.length)];
+      });
+    }
+
+    function initAutoTitles() {
+      let autos = document.querySelectorAll('.auto-title');
+
+      autos.forEach((auto) => {
+        auto.innerHTML = TITLES[rand(0, TITLES.length)];
+      });
+    }
+
+    function initAutoIntegers() {
+      let autos = document.querySelectorAll('.auto-integer');
+
+      autos.forEach((auto) => {
+        let min = parseInt(auto.getAttribute('min'));
+        let max = parseInt(auto.getAttribute('max'));
+
+        auto.innerHTML = rand(min, max);
+      });
+    }
+
+    function initPaginations() {
+      let paginations = document.querySelectorAll('.pagination');
+
+      paginations.forEach((pagination) => {
+        let table = document.getElementById(pagination.getAttribute('data-table'));
+
+        pagination.setAttribute('data-x', '0');
+
+        if (table !== null && table !== undefined) {
+          createPagination(pagination, table);
+
+          pagination.closest('.table-container').addEventListener('wheel', (event) => {
+            event.preventDefault();
+
+            scrollPages(
+              event.wheelDelta
+                ? event.wheelDelta > 0
+                : event.deltaY < 0, pagination,
+              table
+            );
+          });
+        }
+      });
+    }
+
+    function createPagination(pagination, table) {
+      let limit = parseInt(table.getAttribute("data-limit"));
+      let rows = table.querySelectorAll('.table-row:not(.table-heading)');
+      let page_count = Math.ceil(rows.length / limit);
+
+      if (isNaN(limit))
+        limit = 10;
+
+      rows.forEach((row, index) => {
+        if (index >= limit)
+          row.style.display = 'none';
+      });
+
+      for (let i = 0; i < page_count; i++) {
+        let new_button = document.createElement('li');
+
+        new_button.innerHTML = "<span>" + (i + 1) + "</span>";
+
+        if (i === 0)
+          new_button.classList.add('active');
+
+        pagination.appendChild(new_button);
+
+        new_button.addEventListener('click', () => {
+          switchPage(pagination, table, i);
+        });
+      }
+
+      updatePaginationInfos(pagination, table, page_count, 0);
+      initPaginationExtremes(pagination, table, page_count);
+    }
+
+    function scrollPages(direction, pagination, table) {
+      let last_active = pagination.querySelector('li.active');
+      let buttons = pagination.querySelectorAll('li');
+      let last_index = Array.from(buttons).indexOf(last_active);
+      let scroll_index = null;
+
+      if (direction && last_index > 0) {
+        scroll_index = last_index - 1;
+      } else if (!direction && last_index < buttons.length - 1) {
+        scroll_index = last_index + 1;
+      }
+
+      if (scroll_index !== null)
+        switchPage(pagination, table, scroll_index);
+    }
+
+    function switchPage(pagination, table, index, bypass = -1) {
+      let limit = parseInt(table.getAttribute("data-limit"));
+      let rows = table.querySelectorAll('.table-row:not(.table-heading)');
+      let buttons = pagination.querySelectorAll('li');
+      let last_active = pagination.querySelector('li.active');
+      let x_pos = parseInt(pagination.getAttribute('data-x'));
+      let x_shift = 0;
+      let target_pos = (-index + 2) * BTN_WIDTH;
+      let page_count = Math.ceil(rows.length / limit);
+
+      if (bypass !== -1) {
+        x_shift = (-bypass + 2) * BTN_WIDTH;
+      } else {
+        if (index > 1 && index < buttons.length - 2) {
+          x_shift = target_pos;
+        } else if (index === 1) {
+          x_shift = 0;
+        } else if (index === page_count - 2) {
+          x_shift = (-page_count + 5) * BTN_WIDTH;
+        } else {
+          x_shift = x_pos;
+        }
+      }
+
+      rows.forEach((row, row_index) => {
+        if (row_index < index * limit || row_index >= (index * limit) + limit) {
+          row.style.display = 'none';
+        } else {
+          row.style.display = 'flex';
+          row.style.opacity = '0';
+
+          setTimeout(() => {
+            row.style.opacity = '1';
+          }, 50);
+        }
+      });
+
+      last_active.classList.remove('active');
+      buttons[index].classList.add('active');
+      pagination.style.transform = 'translateX(' + x_shift + 'rem)';
+      pagination.setAttribute('data-x', x_shift);
+
+      updatePaginationInfos(pagination, table, page_count, index);
+      updatePaginationProgress(pagination, index, page_count - 1);
+    }
+
+    function updatePaginationInfos(pagination, table, page_count, index) {
+      let info = pagination.closest('.pagination-container').querySelector('.pagination-info');
+
+      if (info === null || info === undefined)
+        return;
+
+      let from = 0, to = 0;
+      let rows = table.querySelectorAll('.table-row:not(.table-heading)');
+      let started = false;
+
+      for (let i = 1; i < rows.length; i++) {
+        let display = rows[i - 1].style.display;
+
+        if (display !== 'none' && !started) {
+          started = true;
+          from = i;
+        } else if ((display === 'none' && started) || i == rows.length - 1) {
+          to = i == rows.length - 1 ? rows.length : i - 1;
+          break;
+        }
+      }
+
+      info.innerHTML = 'Displaying ' + from + '-' + to + ' on page ' + (index + 1) + '/' + page_count;
+    }
+
+    function initPaginationExtremes(pagination, table, max) {
+      let container = pagination.closest('.pagination-container');
+      let left = container.querySelector('.pagination-left');
+      let right = container.querySelector('.pagination-right');
+
+      if (left !== null && left !== undefined) {
+        left.addEventListener('click', () => {
+          switchPage(pagination, table, 0, Math.min(2, max - 1));
+        });
+      }
+
+      if (right !== null && right !== undefined) {
+        right.addEventListener('click', () => {
+          switchPage(pagination, table, max - 1, Math.max(0, max - 3));
+        });
+      }
+
+      initPaginationSteppedExtremes(pagination, table, container, max);
+    }
+
+    function initPaginationSteppedExtremes(pagination, table, container, max) {
+      let left = container.querySelector('.pagination-left-one');
+      let right = container.querySelector('.pagination-right-one');
+
+      if (left !== null && left !== undefined) {
+        left.addEventListener('click', () => {
+          let last_active = pagination.querySelector('li.active');
+          let buttons = pagination.querySelectorAll('li');
+          let last_index = Array.from(buttons).indexOf(last_active);
+
+          if (last_index > 0)
+            switchPage(pagination, table, last_index - 1);
+        });
+      }
+
+      if (right !== null && right !== undefined) {
+        right.addEventListener('click', () => {
+          let last_active = pagination.querySelector('li.active');
+          let buttons = pagination.querySelectorAll('li');
+          let last_index = Array.from(buttons).indexOf(last_active);
+
+          if (last_index < max - 1)
+            switchPage(pagination, table, last_index + 1);
+        });
+      }
+    }
+
+    function updatePaginationProgress(pagination, index, total) {
+      let dot = pagination.closest('.table-container').querySelector('.progress-point');
+
+      dot.style.left = ((index / total) * 100) + '%';
+    }
+
+    function initAutoLimits() {
+      let table_containers = document.querySelectorAll('.table-container');
+      let limit = window.innerHeight / 70;
+
+      table_containers.forEach((container) => {
+        let table = container.querySelector('.table');
+
+        container.setAttribute('style', '--data-limit: ' + limit);
+        table.setAttribute('data-limit', limit);
+      });
+    }
+  </script>
+
+  <footer>
+    Desenvolvido por: <a> Vitória Ranciaro </a>
+  </footer>
+
+  </html>
+
+  codigo barras salvar aqui
+  <form action=""> Total R$: <span type="" name="Total" id="Total" readonly>
+      <button onclick="cart()">Finalizar Compra</button>
